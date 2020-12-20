@@ -1,0 +1,35 @@
+# taken from https://techtutorialsx.com/2017/06/06/esp32-esp8266-micropython-automatic-connection-to-wifi/
+
+
+def connect():
+    import network
+
+    ip = '192.168.0.10' # CHANGE ME MAYBE
+    subnet = '255.255.255.0'
+    gateway = '192.168.0.1' # CHANGE ME MAYBE
+    dns = '8.8.8.8'
+    ssid = 'YOURSSID' # CHANGE ME
+    password = "YOURPASSWORD" # CHANGE ME
+
+    station = network.WLAN(network.STA_IF)
+
+    if station.isconnected():
+        print("Already connected")
+        return
+
+    station.active(True)
+    station.ifconfig((ip, subnet, gateway, dns))
+    station.connect(ssid, password)
+
+    while not station.isconnected():
+        pass
+
+    print("Connection successful")
+    print(station.ifconfig())
+
+
+def disconnect():
+    import network
+    station = network.WLAN(network.STA_IF)
+    station.disconnect()
+    station.active(False)
